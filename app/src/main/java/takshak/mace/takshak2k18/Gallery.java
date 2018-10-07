@@ -1,5 +1,6 @@
 package takshak.mace.takshak2k18;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Gallery extends AppCompatActivity {
     private static final String TAG = "imageurl";
@@ -27,6 +29,8 @@ public class Gallery extends AppCompatActivity {
     ImageView expimgview;
     LinearLayout expndlayout;
     RelativeLayout containerview;
+    AlertDialog alertDialog;
+    AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +39,6 @@ public class Gallery extends AppCompatActivity {
         expimgview = findViewById(R.id.expandedimgview);
         expndlayout = findViewById(R.id.expandedlayout);
         setTitle("Takshak Gallery");
-        Toast.makeText(this,"Click to Expand",Toast.LENGTH_SHORT).show();
         //containerview = findViewById(R.id.containerlayout);
 
         /*String[] i = {"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cat_poster_1.jpg/1200px-Cat_poster_1.jpg",
@@ -48,6 +51,9 @@ public class Gallery extends AppCompatActivity {
         gridView = findViewById(R.id.gridview);
         gridView = (GridView) findViewById(R.id.gridview);
 
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Gallery").setMessage("Getting ready in a moment...").setCancelable(false);
+        alertDialog = builder.create();
 
         expndlayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,18 +62,17 @@ public class Gallery extends AppCompatActivity {
             }
         });
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(Gallery.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
         myRef = database.getReference("imageurl");
+        if (!alertDialog.isShowing()){
+            alertDialog.show();
+        }
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (alertDialog.isShowing()){
+                    alertDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Click to Expand",Toast.LENGTH_SHORT).show();
+                }
                 ArrayList<String> urls = new ArrayList<>();
                 for (DataSnapshot urlSnapshot: dataSnapshot.getChildren()) {
                     String value = urlSnapshot.getValue(String.class);
@@ -75,6 +80,7 @@ public class Gallery extends AppCompatActivity {
                     urls.add(value);
 
                 }
+                Collections.reverse(urls);
                 String[] i = urls.toArray(new String[0]);
                 gridView.setAdapter(new ImageAdapter(Gallery.this,i,expimgview,expndlayout));
             }

@@ -51,7 +51,7 @@ public class profile extends AppCompatActivity {
 
         alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Syncing");
-        alertBuilder.setMessage("Fetching latest updates ...");
+        alertBuilder.setMessage("Fetching latest updates ...").setCancelable(false);
         dialog = alertBuilder.create();
         //Execute only when internet connection is LIVE
         ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);

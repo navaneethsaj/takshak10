@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity
     String path;
     Uri videouri;
     FloatingActionButton galleryFab;
-
+    AlertDialog alertDialog;
+    AlertDialog.Builder builder;
     private static final int REQUEST_WRITE_STORAGE = 112;
     String geturl = "https://demo4664908.mockable.io/happy";
     @TargetApi(Build.VERSION_CODES.M)
@@ -73,6 +74,11 @@ public class MainActivity extends AppCompatActivity
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        builder = new AlertDialog.Builder(this,R.style.AlertDialog);
+        builder.setCancelable(false).setMessage("I'm Booting Up...");
+
+        alertDialog = builder.create();
 
         galleryFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +110,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!alertDialog.isShowing()){
+                    alertDialog.show();
+                }
                 startActivity(new Intent(MainActivity.this,chatbot.class));
             }
         });
@@ -164,6 +173,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        if (alertDialog.isShowing()){
+            alertDialog.dismiss();
+        }
         super.onResume();
     }
 

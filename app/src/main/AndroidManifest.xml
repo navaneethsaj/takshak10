@@ -83,7 +83,8 @@
             android:label="Diver Official"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Gallery"></activity>
+        <activity android:name=".Gallery"
+            android:theme="@style/AppTheme.AppBarOverlay"></activity>
     </application>
 
 </manifest>
