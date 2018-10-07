@@ -1,0 +1,8 @@
+url:http://djustice-android.tumblr.com
+name:Takshak18
+email:aravindbalakrishnan@gmail.com
+gender:male
+botmaster:ARAVIND BALAKRISHNAN
+organization:Medkumo
+version:0.0.1
+
